@@ -1,0 +1,73 @@
+<!-- Where you want to inject to -->
+<%layout("layouts/boilerplate")%>
+
+<div class="row">
+    <h2 class="text-center">Add a Campground</h1>
+        <div class="col-6 offset-3">
+            <form class = "needs-validation" action="/campgrounds" method="POST" novalidate>
+                <div class="mb-4">
+                    <label class="form-label" for="title">Enter Title</label>
+                    <input class="form-control" type="text" id="title" name="campground[title]" required>
+                    <!-- Displays the valid feedback comment -->
+                    <div class="valid-feedback">
+                        Title looks good!
+                    </div>
+                    <!-- Displays Invalid feedback comment -->
+                    <div class="invalid-feedback">
+                        Select a valid title
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label" for="location">Enter Location</label>
+                    <input class="form-control" type="text" id="location" name="campground[location]" required>
+                    <div class="valid-feedback">
+                        Location looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Select a valid location
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label" for="image">Enter Image URL</label>
+                    <input class="form-control" type="text" id="image" name="campground[image]" required>
+                    <div class="valid-feedback">
+                        Image URL looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Select a valid image URL
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label" for="price">Campground Price</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Enter Price" id = "price" name ="campground[price]" required>
+                        <div class="valid-feedback">
+                            Price URL looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Select a valid price
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label" for="description">Enter Description</label>
+                    <textarea class="form-control" name="campground[description]" id="description" cols="30"
+                        rows="3" required></textarea>
+                    <div class="valid-feedback">
+                        Description looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Select a valid description
+                    </div>
+
+                </div>
+                <div class="mb-4">
+                    <button class="btn btn-success">Add Camp</button>
+                </div>
+            </form>
+            <a href="/campgrounds">Go back</a>
+        </div>
+</div>
