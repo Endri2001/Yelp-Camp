@@ -1,8 +1,8 @@
 <!-- displaying a single camp -->
 <%layout("layouts/boilerplate")%> 
 <div class="row">
-    <div class="col-6 offset-3">
-        <div class="card" style="width: 18rem;">
+    <div class="col-6">
+        <div class="card mb-3">
             <img class="card-img-top" src="<%=campground.image%>" alt="Card image cap">
             <div class="card-body">
               <h5 class="card-title"><%=campground.title%></h5>
@@ -21,5 +21,34 @@
             <div class="card-footer text-muted">
                 Posted 5 days ago
             </div>
+        </div>
+</div>
+  <div class="col-6">
+    <h2>Leave a review</h2>
+    <!-- novalidate is done so that we can use bootstrap to validate, class: needs-validation  -->
+    <form action="/campgrounds/<%=campground._id%>/reviews" method = "POST" class = "mb-3 needs-validation" novalidate>
+      <div class="mb-3">
+         <label class = "form-label" for="rating">Rating</label>
+         <input class = "form-range" type = "range" min = "1" max = "5" name = "review[rating]"id = "rating">
+      </div>
+        <div class="mb-3">
+            <label class = "form-label" for="body">Review</label>
+            <!-- the req body contains an object called review with all the information inside -->
+            <textarea class = "form-control" name="review[body]" id="body" cols="30" rows="4" required></textarea>
+            <!-- needs to be below the element-->
+            <div class="valid-feedback">
+              Title looks good!
+            </div>
           </div>
+        <button class = "btn btn-success">Add Review</button>
+    </form>
+    <% for(let review of campground.reviews){%> 
+      <div class="card mb-3">
+        <div class = "card-body">
+          <h5 class="card-title">Rating:<%= review.rating %></h5>
+          <p class="card-text"><%=review.body%></p>
+        </div>
+      </div>
+    <% } %> 
+  </div>
 </div>

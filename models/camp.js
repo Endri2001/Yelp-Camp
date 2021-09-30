@@ -7,8 +7,13 @@ const campSchema = new Schema({
     price:Number, 
     image:String,
     description:String, 
-    location:String
-
+    location:String,
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ]
 })
 
 

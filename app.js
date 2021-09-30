@@ -6,8 +6,10 @@ const ejsMate = require("ejs-mate")
 const methodOverride = require('method-override')
 
 const Campground = require("./models/camp")
+const Review = require("./models/review")
+
 const YelpError = require("./utilities/YelpError")
-const {campgroundSchema} = require ("./schemas.js")
+const {campgroundSchema,reviewSchema} = require ("./schemas.js")
 
 
 
@@ -48,11 +50,23 @@ app.get("/", (req, res)=>{
 const validateCampground = function(req, res,next){
     const {error} = campgroundSchema.validate(req.body)
     if(error){
+        // piece together the error message
         const msg = error.details.map(el=>el.message).join(",")
         throw new YelpError(msg,400)
     }else{
         next()
     }
+}
+const validateReview = function(req,res,next){
+    const {error} = reviewSchema.validate(req.body)
+    if(error){
+        // piece together the error message
+        const msg = error.details.map(el=>el.message).join(",")
+        throw new YelpError(msg,400)
+    }else{
+        next()
+    }
+
 }
 
 // display all camps
@@ -74,7 +88,8 @@ app.get("/campgrounds/new", (req, res)=>{
 app.get("/campgrounds/:id", async (req, res,next)=>{
     try{
         const {id} = req.params 
-        const campground = await Campground.findById(id)
+        // we populate campground so we pass the reviews to the template as well
+        const campground = await Campground.findById(id).populate("reviews")
         res.render("campgrounds/show",{campground})
     }catch(e){
         next(e)
@@ -123,6 +138,23 @@ app.delete("/campgrounds/:id",async (req, res,next)=>{
     }catch(e){
         next(e)
     }
+})
+
+app.post("/campgrounds/:id/reviews", validateReview, async(req,res,next)=>{
+    try{
+        const {id} = req.params
+        const campground = await Campground.findById(id)
+        const review = new Review(req.body.review)
+        campground.reviews.push(review)
+
+        await review.save()
+        await campground.save()
+
+        res.redirect(`/campgrounds/${id}`)
+    }catch(e){
+        next(e)
+    }
+    
 })
 
 // For all requests that does not match to our other routes 
